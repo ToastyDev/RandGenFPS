@@ -3,3 +3,7 @@
 
 #include "RandGenFPSGameModeBase.h"
 
+ARandGenFPSGameModeBase::ARandGenFPSGameModeBase()
+{
+	DefaultPawnClass = ABaseCharacter::StaticClass();
+}
