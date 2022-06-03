@@ -9,6 +9,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Camera/CameraComponent.h"
+#include "WeaponComponent.h"
 
 #include "BaseCharacter.generated.h"
 
@@ -20,54 +21,56 @@ class RANDGENFPS_API ABaseCharacter : public APawn
 
 private:
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Core")
 	USceneComponent* Root;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Core")
 	UFloatingPawnMovement* FloatingPawnMovement;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Character")
 	USkeletalMeshComponent* TPSkelMesh;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Character")
 	USkeletalMeshComponent* FPSkelMesh;
-	UPROPERTY(EditAnywhere)
-	USkeletalMeshComponent* WepMesh;
-	UPROPERTY(EditAnywhere)
+	//UPROPERTY(EditAnywhere, Category = "Character")
+	//USkeletalMeshComponent* WepMesh;
+	UPROPERTY(EditAnywhere, Category = "Character")
+	UWeaponComponent* Weapon;
+	UPROPERTY(EditAnywhere, Category = "Hitboxes")
 	UBoxComponent* BasicHitbox;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Core")
 	UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* HeadHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* ChestHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* LeftUpperArmHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* LeftLowerArmHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* RightUpperArmHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* RightLowerArmHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* LeftUpperLegHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* LeftLowerLegHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* LeftFootHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* RightUpperLegHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* RightLowerLegHitbox;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* RightFootHitbox;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Character")
 	float MaxHealth;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Character")
 	float CurrHealth;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Character")
 	bool bIsJumping;
 
 
@@ -94,4 +97,9 @@ public:
 	void StartJump();
 	UFUNCTION()
 	void EndJump();
+
+	UFUNCTION()
+	void Shoot();
+	UFUNCTION()
+	void Reload();
 };

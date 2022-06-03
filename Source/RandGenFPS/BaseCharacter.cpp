@@ -11,12 +11,14 @@ ABaseCharacter::ABaseCharacter()
 
 	bUseControllerRotationPitch = true;
 	bUseControllerRotationYaw = true;
+	
 
 	MaxHealth = 100.f;
 	CurrHealth = MaxHealth;
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
 	RootComponent = Root;
+	
 
 	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Floating Pawn Movement"));
 
@@ -28,11 +30,15 @@ ABaseCharacter::ABaseCharacter()
 
 	BasicHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
 	BasicHitbox->SetupAttachment(Root);
+	BasicHitbox->SetSimulatePhysics(true);
 	BasicHitbox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-	WepMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
-	WepMesh->SetupAttachment(TPSkelMesh);
+	//WepMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
+	//WepMesh->SetupAttachment(TPSkelMesh);
 
+	Weapon = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon"));
+	Weapon->SetupAttachment(FPSkelMesh);
+	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(TPSkelMesh);
 
@@ -79,6 +85,11 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Character Created"));
+
+	Weapon->SetMaxMagSize(3);
+	Weapon->SetMaxAmmoSize(10);
+
 	//config hitbox size based on mesh;
 	//probably going with the dictionary style where I will have a file somewhere that this class can access. Populate based on given mesh.
 	//BasicHitbox->SetBoxExtent(FVector(TPSkelMesh->Bounds));
@@ -86,6 +97,9 @@ void ABaseCharacter::BeginPlay()
 	BasicHitbox->SetBoxExtent(FVector(30.f, 30.f, 30.f));
 	BasicHitbox->SetSimulatePhysics(true);
 	UE_LOG(LogTemp, Warning, TEXT("Basic Hit Box Collision: %s"), (BasicHitbox->IsCollisionEnabled() ? TEXT("true") : TEXT("false")));
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Mag = %i"), Weapon->MaxMag));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Ammo = %i"), Weapon->MaxAmmo));
 
 	//orient weapon based on mesh;
 
@@ -111,10 +125,15 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAxis("Forward", this, &ABaseCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Right", this, &ABaseCharacter::MoveRight);
+
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABaseCharacter::StartJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABaseCharacter::EndJump);
+
 	PlayerInputComponent->BindAxis("Turn", this, &ABaseCharacter::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &ABaseCharacter::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ABaseCharacter::Shoot);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ABaseCharacter::Reload);
 
 }
 
@@ -160,5 +179,15 @@ void ABaseCharacter::StartJump()
 void ABaseCharacter::EndJump()
 {
 	bIsJumping = false;
+}
+
+void ABaseCharacter::Shoot()
+{
+	Weapon->Shoot();
+}
+
+void ABaseCharacter::Reload()
+{
+	Weapon->Reload();
 }
 
