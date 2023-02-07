@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"\
 
 #include "BaseCharacter.h"
+#include "TestCharacter.h"
 
 #include "RandGenFPSGameModeBase.generated.h"
 

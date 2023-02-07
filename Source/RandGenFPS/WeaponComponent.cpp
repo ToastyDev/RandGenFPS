@@ -10,7 +10,7 @@ UWeaponComponent::UWeaponComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	WeaponMesh = CreateDefaultSubobject<USkeletalMesh>(TEXT("Weapon Mesh"));
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
 	
 }
 

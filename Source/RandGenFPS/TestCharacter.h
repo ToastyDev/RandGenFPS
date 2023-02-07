@@ -3,32 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-
-#include "GameFramework/FloatingPawnMovement.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
-#include "Camera/CameraComponent.h"
-#include "WeaponComponent.h"
 
-#include "BaseCharacter.generated.h"
+#include "WeaponComponent.h"
+#include "TestCharacter.generated.h"
 
 UCLASS()
-class RANDGENFPS_API ABaseCharacter : public APawn
+class RANDGENFPS_API ATestCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-
-private:
-
-	UPROPERTY(VisibleAnywhere, Category = "Core")
-	USceneComponent* Root;
-
-	//UPROPERTY(VisibleAnywhere, Category = "Core")
-	//UFloatingPawnMovement* FloatingPawnMovement;
-	UPROPERTY(VisibleAnywhere, Category = "Core")
-	UCharacterMovementComponent* MovementComponent;
+	//1UPROPERTY(VisibleAnywhere, Category = "Core")
+	//USceneComponent* Root;
 
 	UPROPERTY(EditAnywhere, Category = "Character")
 	USkeletalMeshComponent* TPSkelMesh;
@@ -38,10 +25,8 @@ private:
 	//USkeletalMeshComponent* WepMesh;
 	UPROPERTY(EditAnywhere, Category = "Character")
 	UWeaponComponent* Weapon;
-	UPROPERTY(EditAnywhere, Category = "Hitboxes")
-	UBoxComponent* BasicHitbox;
-	UPROPERTY(EditAnywhere, Category = "Core")
-	UCameraComponent* Camera;
+	//UPROPERTY(EditAnywhere, Category = "Hitboxes")
+	//UBoxComponent* BasicHitbox;
 
 	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* HeadHitbox;
@@ -76,10 +61,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Character")
 	bool bIsJumping;
 
-
 public:
-	// Sets default values for this pawn's properties
-	ABaseCharacter();
+	// Sets default values for this character's properties
+	ATestCharacter();
 
 protected:
 	// Called when the game starts or when spawned

@@ -5,5 +5,6 @@
 
 ARandGenFPSGameModeBase::ARandGenFPSGameModeBase()
 {
-	DefaultPawnClass = ABaseCharacter::StaticClass();
+	//DefaultPawnClass = ABaseCharacter::StaticClass();
+	DefaultPawnClass = ATestCharacter::StaticClass();
 }

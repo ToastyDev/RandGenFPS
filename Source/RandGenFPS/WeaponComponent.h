@@ -16,7 +16,8 @@ public:
 	// Sets default values for this component's properties
 	UWeaponComponent();
 
-	USkeletalMesh* WeaponMesh;
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* WeaponMesh;
 
 	uint16 MaxMag;
 	uint16 CurrentMag;

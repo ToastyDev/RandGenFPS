@@ -1,92 +1,85 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BaseCharacter.h"
+#include "TestCharacter.h"
 
 // Sets default values
-ABaseCharacter::ABaseCharacter()
+ATestCharacter::ATestCharacter()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationPitch = true;
 	bUseControllerRotationYaw = true;
-	
+
+	//SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	MaxHealth = 100.f;
 	CurrHealth = MaxHealth;
 
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
-	RootComponent = Root;
-
-	//FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Floating Pawn Movement"));
-
-	MovementComponent = CreateDefaultSubobject<UCharacterMovementComponent>(TEXT("Movement Component"));
+	//Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
+	//RootComponent = Root;
 
 	TPSkelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TP Mesh"));
-	TPSkelMesh->SetupAttachment(Root);
+	TPSkelMesh->SetupAttachment(RootComponent);
 
 	FPSkelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP Mesh"));
-	FPSkelMesh->SetupAttachment(Root);
+	FPSkelMesh->SetupAttachment(RootComponent);
 	FPSkelMesh->SetOnlyOwnerSee(true);
 
-	BasicHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
-	BasicHitbox->SetupAttachment(Root);
-	BasicHitbox->SetSimulatePhysics(true);
-	BasicHitbox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
-	//WepMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
-	//WepMesh->SetupAttachment(TPSkelMesh);
+	//BasicHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
+	//BasicHitbox->SetupAttachment(Root);
+	////BasicHitbox->SetSimulatePhysics(true);
+	//BasicHitbox->CanCharacterStepUp(false);
+	//BasicHitbox->SetCollisionProfileName("NoCollision");
+	//BasicHitbox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
 	Weapon = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(FPSkelMesh);
-	
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(TPSkelMesh);
 
 	HeadHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Head Hitbox"));
-	HeadHitbox->SetupAttachment(Root);
+	HeadHitbox->SetupAttachment(RootComponent);
 
 	ChestHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Chest Hitbox"));
-	ChestHitbox->SetupAttachment(Root);
+	ChestHitbox->SetupAttachment(RootComponent);
 
 	LeftUpperArmHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Upper Arm Hitbox"));
-	LeftUpperArmHitbox->SetupAttachment(Root);
+	LeftUpperArmHitbox->SetupAttachment(RootComponent);
 
 	LeftLowerArmHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Lower Arm Hitbox"));
-	LeftLowerArmHitbox->SetupAttachment(Root);
+	LeftLowerArmHitbox->SetupAttachment(RootComponent);
 
 	RightUpperArmHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Upper Arm Hitbox"));
-	RightUpperArmHitbox->SetupAttachment(Root);
+	RightUpperArmHitbox->SetupAttachment(RootComponent);
 
 	RightLowerArmHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Lower Arm Hitbox"));
-	RightLowerArmHitbox->SetupAttachment(Root);
+	RightLowerArmHitbox->SetupAttachment(RootComponent);
 
 	LeftUpperLegHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Upper Leg Hitbox"));
-	LeftUpperLegHitbox->SetupAttachment(Root);
+	LeftUpperLegHitbox->SetupAttachment(RootComponent);
 
 	LeftLowerLegHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Lower Leg Hitbox"));
-	LeftLowerLegHitbox->SetupAttachment(Root);
+	LeftLowerLegHitbox->SetupAttachment(RootComponent);
 
 	LeftFootHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Left Foot Hitbox"));
-	LeftFootHitbox->SetupAttachment(Root);
+	LeftFootHitbox->SetupAttachment(RootComponent);
 
 	RightUpperLegHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Upper Leg Hitbox"));
-	RightUpperLegHitbox->SetupAttachment(Root);
+	RightUpperLegHitbox->SetupAttachment(RootComponent);
 
 	RightLowerLegHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Lower Leg Hitbox"));
-	RightLowerLegHitbox->SetupAttachment(Root);
+	RightLowerLegHitbox->SetupAttachment(RootComponent);
 
 	RightFootHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Foot Hitbox"));
-	RightFootHitbox->SetupAttachment(Root);
+	RightFootHitbox->SetupAttachment(RootComponent);
 
 }
 
 // Called when the game starts or when spawned
-void ABaseCharacter::BeginPlay()
+void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Character Created"));
 
 	Weapon->SetMaxMagSize(3);
@@ -95,51 +88,45 @@ void ABaseCharacter::BeginPlay()
 	//config hitbox size based on mesh;
 	//probably going with the dictionary style where I will have a file somewhere that this class can access. Populate based on given mesh.
 	//BasicHitbox->SetBoxExtent(FVector(TPSkelMesh->Bounds));
-	BasicHitbox->SetHiddenInGame(false);
-	BasicHitbox->SetBoxExtent(FVector(30.f, 30.f, 30.f));
-	BasicHitbox->SetSimulatePhysics(true);
-	UE_LOG(LogTemp, Warning, TEXT("Basic Hit Box Collision: %s"), (BasicHitbox->IsCollisionEnabled() ? TEXT("true") : TEXT("false")));
+	//BasicHitbox->SetHiddenInGame(false);
+	//BasicHitbox->SetBoxExtent(FVector(30.f, 30.f, 30.f));
+	//BasicHitbox->SetSimulatePhysics(true);
+	//UE_LOG(LogTemp, Warning, TEXT("Basic Hit Box Collision: %s"), (BasicHitbox->IsCollisionEnabled() ? TEXT("true") : TEXT("false")));
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Mag = %i"), Weapon->MaxMag));
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Ammo = %i"), Weapon->MaxAmmo));
 
-	//orient weapon based on mesh;
-
-	//set remote visible
-
-	//make local invisible
-	//if (this->IsLocallyControlled())
-		//TPSkelMesh->SetHiddenInGame(true);
+	
 	
 }
 
 // Called every frame
-void ABaseCharacter::Tick(float DeltaTime)
+void ATestCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("Forward", this, &ABaseCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("Right", this, &ABaseCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("Forward", this, &ATestCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("Right", this, &ATestCharacter::MoveRight);
 
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABaseCharacter::StartJump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABaseCharacter::EndJump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ATestCharacter::StartJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ATestCharacter::EndJump);
 
-	PlayerInputComponent->BindAxis("Turn", this, &ABaseCharacter::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &ABaseCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("Turn", this, &ATestCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &ATestCharacter::AddControllerPitchInput);
 
-	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ABaseCharacter::Shoot);
-	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ABaseCharacter::Reload);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &ATestCharacter::Shoot);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ATestCharacter::Reload);
 
 }
 
-void ABaseCharacter::MoveForward(float value)
+void ATestCharacter::MoveForward(float value)
 {
 	if ((Controller != NULL) && (value != 0.f))
 	{
@@ -152,10 +139,10 @@ void ABaseCharacter::MoveForward(float value)
 		AddMovementInput(Direction, value);
 		//AddMovementInput(GetActorForwardVector(), value);
 	}
-	
+
 }
 
-void ABaseCharacter::MoveRight(float value)
+void ATestCharacter::MoveRight(float value)
 {
 	if ((Controller != NULL) && (value != 0.f))
 	{
@@ -170,25 +157,25 @@ void ABaseCharacter::MoveRight(float value)
 	}
 }
 
-void ABaseCharacter::StartJump()
+void ATestCharacter::StartJump()
 {
 	bIsJumping = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Jumping"));
 
-	BasicHitbox->AddImpulse(GetActorUpVector() * 100.f);
+	//BasicHitbox->AddImpulse(GetActorUpVector() * 100.f);
 }
 
-void ABaseCharacter::EndJump()
+void ATestCharacter::EndJump()
 {
 	bIsJumping = false;
 }
 
-void ABaseCharacter::Shoot()
+void ATestCharacter::Shoot()
 {
 	Weapon->Shoot();
 }
 
-void ABaseCharacter::Reload()
+void ATestCharacter::Reload()
 {
 	Weapon->Reload();
 }
