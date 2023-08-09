@@ -12,13 +12,8 @@ ATestCharacter::ATestCharacter()
 	bUseControllerRotationPitch = true;
 	bUseControllerRotationYaw = true;
 
-	//SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
 	MaxHealth = 100.f;
 	CurrHealth = MaxHealth;
-
-	//Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
-	//RootComponent = Root;
 
 	TPSkelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TP Mesh"));
 	TPSkelMesh->SetupAttachment(RootComponent);
@@ -27,12 +22,9 @@ ATestCharacter::ATestCharacter()
 	FPSkelMesh->SetupAttachment(RootComponent);
 	FPSkelMesh->SetOnlyOwnerSee(true);
 
-	//BasicHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
-	//BasicHitbox->SetupAttachment(Root);
-	////BasicHitbox->SetSimulatePhysics(true);
-	//BasicHitbox->CanCharacterStepUp(false);
-	//BasicHitbox->SetCollisionProfileName("NoCollision");
-	//BasicHitbox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	BasicHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
+	BasicHitbox->SetupAttachment(RootComponent);
+	BasicHitbox->CanCharacterStepUp(false);
 
 	Weapon = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(FPSkelMesh);
@@ -88,16 +80,12 @@ void ATestCharacter::BeginPlay()
 	//config hitbox size based on mesh;
 	//probably going with the dictionary style where I will have a file somewhere that this class can access. Populate based on given mesh.
 	//BasicHitbox->SetBoxExtent(FVector(TPSkelMesh->Bounds));
-	//BasicHitbox->SetHiddenInGame(false);
-	//BasicHitbox->SetBoxExtent(FVector(30.f, 30.f, 30.f));
-	//BasicHitbox->SetSimulatePhysics(true);
-	//UE_LOG(LogTemp, Warning, TEXT("Basic Hit Box Collision: %s"), (BasicHitbox->IsCollisionEnabled() ? TEXT("true") : TEXT("false")));
+	BasicHitbox->SetHiddenInGame(false);
+	BasicHitbox->SetBoxExtent(FVector(30.f, 30.f, 50.f));
+	UE_LOG(LogTemp, Warning, TEXT("Basic Hit Box Collision: %s"), (BasicHitbox->IsCollisionEnabled() ? TEXT("true") : TEXT("false")));
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Mag = %i"), Weapon->MaxMag));
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Ammo = %i"), Weapon->MaxAmmo));
-
-	
-	
 }
 
 // Called every frame
@@ -137,7 +125,6 @@ void ATestCharacter::MoveForward(float value)
 
 		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 		AddMovementInput(Direction, value);
-		//AddMovementInput(GetActorForwardVector(), value);
 	}
 
 }
@@ -153,7 +140,6 @@ void ATestCharacter::MoveRight(float value)
 
 		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 		AddMovementInput(Direction, value);
-		//AddMovementInput(GetActorRightVector(), value);
 	}
 }
 
@@ -161,8 +147,6 @@ void ATestCharacter::StartJump()
 {
 	bPressedJump = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Jumping"));
-
-	//BasicHitbox->AddImpulse(GetActorUpVector() * 100.f);
 }
 
 void ATestCharacter::EndJump()

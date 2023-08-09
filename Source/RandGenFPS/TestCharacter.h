@@ -25,8 +25,9 @@ class RANDGENFPS_API ATestCharacter : public ACharacter
 	//USkeletalMeshComponent* WepMesh;
 	UPROPERTY(EditAnywhere, Category = "Character")
 	UWeaponComponent* Weapon;
-	//UPROPERTY(EditAnywhere, Category = "Hitboxes")
-	//UBoxComponent* BasicHitbox;
+
+	UPROPERTY(EditAnywhere, Category = "Hitboxes")
+	UBoxComponent* BasicHitbox;
 
 	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* HeadHitbox;
