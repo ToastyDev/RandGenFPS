@@ -159,7 +159,7 @@ void ATestCharacter::MoveRight(float value)
 
 void ATestCharacter::StartJump()
 {
-	bIsJumping = true;
+	bPressedJump = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Jumping"));
 
 	//BasicHitbox->AddImpulse(GetActorUpVector() * 100.f);
@@ -167,7 +167,7 @@ void ATestCharacter::StartJump()
 
 void ATestCharacter::EndJump()
 {
-	bIsJumping = false;
+	bPressedJump = false;
 }
 
 void ATestCharacter::Shoot()

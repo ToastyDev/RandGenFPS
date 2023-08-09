@@ -58,9 +58,6 @@ class RANDGENFPS_API ATestCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, Category = "Character")
 	float CurrHealth;
 
-	UPROPERTY(VisibleAnywhere, Category = "Character")
-	bool bIsJumping;
-
 public:
 	// Sets default values for this character's properties
 	ATestCharacter();
