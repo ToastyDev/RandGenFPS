@@ -6,5 +6,11 @@
 ARandGenFPSGameModeBase::ARandGenFPSGameModeBase()
 {
 	//DefaultPawnClass = ABaseCharacter::StaticClass();
-	DefaultPawnClass = ATestCharacter::StaticClass();
+	ConstructorHelpers::FClassFinder<ATestCharacter> PawnClassAsset(TEXT("/Game/Blueprints/TestCharacter_BP"));
+	if (PawnClassAsset.Succeeded())
+		DefaultPawnClass = PawnClassAsset.Class;
+	else
+		UE_LOG(LogTemp, Error, TEXT("Failed to read Blueprint test char."));
+
+	//DefaultPawnClass = ATestCharacter::StaticClass();
 }

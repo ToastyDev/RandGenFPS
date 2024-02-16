@@ -12,16 +12,20 @@ ATestCharacter::ATestCharacter()
 	bUseControllerRotationPitch = true;
 	bUseControllerRotationYaw = true;
 
+	//Vars
 	MaxHealth = 100.f;
 	CurrHealth = MaxHealth;
 
+	//Meshes
 	TPSkelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TP Mesh"));
 	TPSkelMesh->SetupAttachment(RootComponent);
+	TPSkelMesh->SetVisibility(true);
 
 	FPSkelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP Mesh"));
 	FPSkelMesh->SetupAttachment(RootComponent);
 	FPSkelMesh->SetOnlyOwnerSee(true);
 
+	//Test Hitbox
 	BasicHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Hitbox"));
 	BasicHitbox->SetupAttachment(RootComponent);
 	BasicHitbox->CanCharacterStepUp(false);
@@ -29,8 +33,10 @@ ATestCharacter::ATestCharacter()
 	Weapon = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(FPSkelMesh);
 
+	//Hitboxes
 	HeadHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Head Hitbox"));
 	HeadHitbox->SetupAttachment(RootComponent);
+	
 
 	ChestHitbox = CreateDefaultSubobject<UBoxComponent>(TEXT("Chest Hitbox"));
 	ChestHitbox->SetupAttachment(RootComponent);
@@ -86,6 +92,9 @@ void ATestCharacter::BeginPlay()
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Mag = %i"), Weapon->MaxMag));
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Weapon: Starting Max Ammo = %i"), Weapon->MaxAmmo));
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Bone Name = %s"), TPSkelMesh->GetBoneName(1).ToString()));
+	//UE_LOG(LogTemp, Warning, TEXT("Bone Name = %s"), TPSkelMesh->GetBoneName(1).ToString());
 }
 
 // Called every frame

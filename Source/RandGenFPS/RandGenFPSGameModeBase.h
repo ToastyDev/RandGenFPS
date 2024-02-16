@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"\
+#include "GameFramework/GameModeBase.h"
+//#include "UObject/ContructorHelpers.h"
 
 #include "BaseCharacter.h"
 #include "TestCharacter.h"
