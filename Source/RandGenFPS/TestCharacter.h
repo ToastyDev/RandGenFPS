@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Components/BoxComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 #include "WeaponComponent.h"
 #include "TestCharacter.generated.h"
@@ -21,8 +22,10 @@ class RANDGENFPS_API ATestCharacter : public ACharacter
 	USkeletalMeshComponent* TPSkelMesh;
 	UPROPERTY(EditAnywhere, Category = "Character")
 	USkeletalMeshComponent* FPSkelMesh;
-	//UPROPERTY(EditAnywhere, Category = "Character")
-	//USkeletalMeshComponent* WepMesh;
+
+	UPROPERTY(EditAnywhere)
+	USkeleton* SkelTest;
+
 	UPROPERTY(EditAnywhere, Category = "Character")
 	UWeaponComponent* Weapon;
 
@@ -53,6 +56,31 @@ class RANDGENFPS_API ATestCharacter : public ACharacter
 	UBoxComponent* RightLowerLegHitbox;
 	UPROPERTY(VisibleAnywhere, Category = "Hitboxes")
 	UBoxComponent* RightFootHitbox;
+	
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* HeadSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* ChestSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* LeftUpperArmSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* LeftLowerArmSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* RightUpperArmSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* RightLowerArmSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* LeftUpperLegSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* LeftLowerLegSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* LeftFootSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* RightUpperLegSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* RightLowerLegSocket;
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshSocket* RightFootSocket;
 
 	UPROPERTY(VisibleAnywhere, Category = "Character")
 	float MaxHealth;
